@@ -263,4 +263,4 @@ export const INITIAL_DATA = [
 },
 ];
 
-export const CATEGORIES = ["全部", "快樂流", "秒殺流", "移速", "坦克", "法傷", "物攻123"];
+export const CATEGORIES = ["全部", "快樂流", "秒殺流", "移速", "坦克", "法傷", "回歸基本功"];
