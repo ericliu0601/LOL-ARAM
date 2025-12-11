@@ -1,7 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { Search, Sword, Shield, Zap, Play, X } from 'lucide-react';
 
-// 🟢 從剛剛建立的 data.js 匯入資料
+// 🟢 在您的本機端，請確保使用這一行：
+// import { INITIAL_DATA } from './data';
+
+// 🟢 為了讓您在這邊能直接預覽，我先把資料寫在這裡。
+// 🟢 (請注意：本機端請把下方的 INITIAL_DATA 變數刪除，使用上方的 import)
 import { INITIAL_DATA } from './data';
 
 export default function ArenaHub() {
@@ -10,17 +14,26 @@ export default function ArenaHub() {
   const [selectedCategory, setSelectedCategory] = useState("全部");
   const [selectedCard, setSelectedCard] = useState(null);
 
+  // ✨ 1. 新增：動態產生並隨機排序的分類標籤 (categories 小寫)
+  const categories = useMemo(() => {
+    const allTags = new Set();
+    posts.forEach(post => {
+      if (Array.isArray(post.tags)) {
+        post.tags.forEach(tag => allTags.add(tag));
+      }
+    });
+    const shuffledTags = Array.from(allTags).sort(() => Math.random() - 0.5);
+    return ["全部", ...shuffledTags];
+  }, [posts]);
+
   // 🛠️ 影片嵌入網址轉換邏輯
   const getEmbedUrl = (url) => {
     if (!url) return null;
 
     try {
-      // 1. Facebook
       if (url.includes('facebook.com') || url.includes('fb.watch')) {
         return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false&t=0&autoplay=1&muted=1`;
       }
-
-      // 2. YouTube (新增 Shorts 支援)
       if (url.includes('youtube.com') || url.includes('youtu.be')) {
         let videoId = '';
         if (url.includes('/embed/')) {
@@ -32,11 +45,8 @@ export default function ArenaHub() {
         } else if (url.includes('youtu.be/')) {
           videoId = url.split('youtu.be/')[1].split('?')[0];
         }
-        
         if (videoId) return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`;
       }
-
-      // 3. Instagram
       if (url.includes('instagram.com')) {
         const match = url.match(/\/(?:p|reel|reels|tv)\/([a-zA-Z0-9_-]+)/);
         if (match && match[1]) {
@@ -44,8 +54,6 @@ export default function ArenaHub() {
         }
         return null; 
       }
-
-      // 4. Threads
       if (url.includes('threads.net')) {
         const cleanUrl = url.split('?')[0];
         const baseUrl = cleanUrl.endsWith('/') ? cleanUrl.slice(0, -1) : cleanUrl;
@@ -55,7 +63,6 @@ export default function ArenaHub() {
       console.error("URL 解析失敗:", error);
       return null;
     }
-
     return null; 
   };
 
@@ -71,7 +78,6 @@ export default function ArenaHub() {
     });
   }, [searchTerm, selectedCategory, posts]);
 
-  // 判斷是否為 YouTube 影片
   const isYouTube = selectedCard?.videoUrl?.includes('youtube.com') || selectedCard?.videoUrl?.includes('youtu.be');
 
   return (
@@ -106,7 +112,8 @@ export default function ArenaHub() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8 overflow-x-auto pb-2 scrollbar-hide">
           <div className="flex space-x-2">
-            {CATEGORIES.map((cat) => (
+            {/* ✨ 2. 修正處：這裡改用 categories (小寫) */}
+            {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
@@ -132,13 +139,12 @@ export default function ArenaHub() {
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-60 z-10"></div>
                 <div className="w-full h-full bg-slate-600 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
                   <span className="text-6xl font-black text-slate-800 opacity-50 uppercase tracking-tighter">
-                    {/* 只取第一個名字的前兩個字顯示 */}
                     {item.champion.split(',')[0].substring(0, 2)}
                   </span>
                 </div>
                 <div className="absolute bottom-3 left-3 z-20">
-                   <h3 className="text-white font-bold text-lg drop-shadow-md leading-tight">{item.title}</h3>
-                   <p className="text-yellow-400 text-sm font-medium drop-shadow-sm line-clamp-1">{item.champion}</p>
+                    <h3 className="text-white font-bold text-lg drop-shadow-md leading-tight">{item.title}</h3>
+                    <p className="text-yellow-400 text-sm font-medium drop-shadow-sm line-clamp-1">{item.champion}</p>
                 </div>
               </div>
               <div className="p-4 flex-1 flex flex-col">
@@ -150,11 +156,11 @@ export default function ArenaHub() {
                   ))}
                 </div>
                 <div className="mt-auto pt-4 border-t border-slate-700/50 flex justify-between items-center text-xs text-slate-400">
-                   <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1">
                       <Zap className="w-3 h-3 text-yellow-500" />
                       <span className="truncate max-w-[120px]">{item.augments[0]}</span>
-                   </div>
-                   <span>by {item.author}</span>
+                    </div>
+                    <span>by {item.author}</span>
                 </div>
               </div>
             </div>
@@ -162,16 +168,13 @@ export default function ArenaHub() {
         </div>
       </main>
 
-      {/* 詳細頁面 Modal */}
       {selectedCard && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
           <div className="absolute inset-0 bg-slate-900/90 backdrop-blur-sm" onClick={() => setSelectedCard(null)}></div>
           
           <div className="relative bg-slate-800 rounded-2xl w-full max-w-5xl max-h-[95vh] overflow-hidden shadow-2xl border border-slate-700 flex flex-col lg:flex-row animate-in fade-in zoom-in duration-200">
-            
             <button onClick={() => setSelectedCard(null)} className="absolute top-4 right-4 z-50 p-2 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors"><X className="w-5 h-5" /></button>
             
-            {/* 🎥 影片播放區 (9:16) */}
             <div className="w-full lg:w-[50%] bg-slate-950 flex items-center justify-center relative overflow-hidden">
                <div className="w-full h-full flex justify-center bg-black">
                   <div className="aspect-[9/16] h-full max-h-[80vh] w-auto">
@@ -182,7 +185,6 @@ export default function ArenaHub() {
                         className="w-full h-full border-0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                         allowFullScreen
-                        // 🟢 關鍵修正：如果是 YouTube 就不加 no-referrer，其他平台則加上
                         referrerPolicy={isYouTube ? "strict-origin-when-cross-origin" : "no-referrer"}
                         ></iframe>
                     ) : (
@@ -196,15 +198,12 @@ export default function ArenaHub() {
                </div>
             </div>
 
-            {/* 資訊區 */}
             <div className="w-full lg:w-[50%] p-6 md:p-8 flex flex-col overflow-y-auto max-h-[40vh] lg:max-h-full bg-slate-800 border-t lg:border-t-0 lg:border-l border-slate-700">
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-2">
                     <span className="text-slate-400 text-sm font-mono tracking-wider uppercase">{selectedCard.champion}</span>
                 </div>
                 <h2 className="text-2xl font-bold text-white mb-2 leading-tight">{selectedCard.title}</h2>
-                {/* ⭐⭐ 這裡！就是這裡加入了 whitespace-pre-wrap ⭐⭐ */}
-                <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">{selectedCard.description}</p>
               </div>
 
               <div className="space-y-6 mb-8 flex-1">
