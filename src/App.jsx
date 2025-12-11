@@ -2,7 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { Search, Sword, Shield, Zap, Play, X } from 'lucide-react';
 
 // 🟢 從剛剛建立的 data.js 匯入資料
-import { INITIAL_DATA, CATEGORIES } from './data';
+//import { INITIAL_DATA, CATEGORIES } from './data';
+import { INITIAL_DATA } from './data';
 
 export default function ArenaHub() {
   const [posts] = useState(INITIAL_DATA);
