@@ -1,0 +1,1 @@
+const ADSENSE_CLIENT_ID = "ca-pub-1128962279856836";
