@@ -30,6 +30,79 @@ export const INITIAL_DATA = [
       "fun": "高"
     }
   },
+  {
+  "id": 1765463778313,
+  "champion": "維爾戈",
+  "title": "暴擊流維爾戈",
+  "description": "海克斯大亂鬥 暴擊流維爾戈",
+  "tags": [
+    "維爾戈"
+  ],
+  "augments": [
+    "維爾戈"
+  ],
+  "items": [
+    "維爾戈"
+  ],
+  "videoUrl": "https://www.facebook.com/watch/?v=874223808470340",
+  "thumbnail": "",
+  "difficulty": "中等",
+  "fun": "高",
+  "author": "ArenaMaster",
+  "stats": {
+    "difficulty": "中等",
+    "fun": "高"
+  }
+},
+{
+  "id": 1765463925314,
+  "champion": "蠻王,泰達米爾",
+  "title": "死亡循環",
+  "description": "海克斯大亂鬥 暴擊流維爾戈",
+  "tags": [
+    "死亡循環",
+    "蠻王",
+    "泰達米爾"
+  ],
+  "augments": [
+    "死亡循環"
+  ],
+  "items": [
+    "維爾戈"
+  ],
+  "videoUrl": "https://www.facebook.com/watch/?v=874223808470340",
+  "thumbnail": "",
+  "difficulty": "中等",
+  "fun": "高",
+  "author": "ArenaMaster",
+  "stats": {
+    "difficulty": "中等",
+    "fun": "高"
+  }
+},
+{
+  "id": 1765464035713,
+  "champion": "燼",
+  "title": "活力再生",
+  "description": "燼最爽玩法，只需一個銀色天賦 活力再生",
+  "tags": [
+    "燼",
+    "活力再生"
+  ],
+  "augments": [
+    "死亡循環"
+  ],
+  "items": [],
+  "videoUrl": "https://www.facebook.com/watch/?v=2105959086476788",
+  "thumbnail": "",
+  "difficulty": "中等",
+  "fun": "高",
+  "author": "ArenaMaster",
+  "stats": {
+    "difficulty": "中等",
+    "fun": "高"
+  }
+},
 ];
 
 export const CATEGORIES = ["全部", "快樂流", "秒殺流", "移速", "坦克", "法傷", "物攻"];
