@@ -3,7 +3,7 @@ import { Search, Sword, Shield, Zap, Play, X } from 'lucide-react';
 
 <AdBanner 
   type="adsense" 
-  slot="8888888888"  // 填入步驟四取得的 slot ID
+  slot="1128962279856836"  // 填入步驟四取得的 slot ID
 />
 
 // 🟢 從剛剛建立的 data.js 匯入資料
