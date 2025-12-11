@@ -14,7 +14,7 @@ export default function ArenaHub() {
   const [selectedCategory, setSelectedCategory] = useState("全部");
   const [selectedCard, setSelectedCard] = useState(null);
 
-  // ✨ 1. 新增：動態產生並隨機排序的分類標籤 (categories 小寫)
+  // ✨ 1. 修改：隨機排序並只取前 10 個
   const categories = useMemo(() => {
     const allTags = new Set();
     posts.forEach(post => {
@@ -22,7 +22,8 @@ export default function ArenaHub() {
         post.tags.forEach(tag => allTags.add(tag));
       }
     });
-    const shuffledTags = Array.from(allTags).sort(() => Math.random() - 0.5);
+    // 先洗牌，再只取前 10 個 (.slice(0, 10))
+    const shuffledTags = Array.from(allTags).sort(() => Math.random() - 0.5).slice(0, 10);
     return ["全部", ...shuffledTags];
   }, [posts]);
 
@@ -110,9 +111,9 @@ export default function ArenaHub() {
       </nav>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8 overflow-x-auto pb-2 scrollbar-hide">
-          <div className="flex space-x-2">
-            {/* ✨ 2. 修正處：這裡改用 categories (小寫) */}
+        {/* ✨ 2. 修改處：改為 flex-wrap 以支援換行，並移除 overflow-x-auto */}
+        <div className="mb-8">
+          <div className="flex flex-wrap gap-2">
             {categories.map((cat) => (
               <button
                 key={cat}
