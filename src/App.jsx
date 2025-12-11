@@ -205,6 +205,8 @@ export default function ArenaHub() {
                     <span className="text-slate-400 text-sm font-mono tracking-wider uppercase">{selectedCard.champion}</span>
                 </div>
                 <h2 className="text-2xl font-bold text-white mb-2 leading-tight">{selectedCard.title}</h2>
+                {/* ✨ 3. 將內文描述加回來，並保留自動換行 */}
+                <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">{selectedCard.description}</p>
               </div>
 
               <div className="space-y-6 mb-8 flex-1">
