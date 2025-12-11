@@ -10,23 +10,6 @@ export default function ArenaHub() {
   const [selectedCategory, setSelectedCategory] = useState("全部");
   const [selectedCard, setSelectedCard] = useState(null);
 
-  // ✨ 新增：動態產生並隨機排序的分類標籤
-  const categories = useMemo(() => {
-    // 1. 抓取所有文章的 tags
-    const allTags = new Set();
-    posts.forEach(post => {
-      if (Array.isArray(post.tags)) {
-        post.tags.forEach(tag => allTags.add(tag));
-      }
-    });
-
-    // 2. 轉為陣列並隨機洗牌 (Shuffle)
-    const shuffledTags = Array.from(allTags).sort(() => Math.random() - 0.5);
-
-    // 3. 總是把 "全部" 放在第一個，並接上隨機標籤
-    return ["全部", ...shuffledTags];
-  }, [posts]);
-
   // 🛠️ 影片嵌入網址轉換邏輯
   const getEmbedUrl = (url) => {
     if (!url) return null;
